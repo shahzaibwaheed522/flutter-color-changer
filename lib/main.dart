@@ -1,38 +1,36 @@
-import 'package:flutter/material.dart';
+import "package:flutter/material.dart";
 void main(){
   runApp(MaterialApp(
-    home:CounterPage(),
+    debugShowCheckedModeBanner: false,
+    home:MyApp(),
   ));
 }
-class CounterPage extends StatefulWidget{
-    const CounterPage({super.key});
-    State<CounterPage> createState()=>_CounterPageState();
+class MyApp extends StatefulWidget{
+  const MyApp({super.key});
+  State<MyApp> createState()=> _MyAppState();
 }
-class _CounterPageState extends State<CounterPage>{
-   int number=0;
-   @override  
-   Widget build(BuildContext context){
-    return Scaffold(
-      body: Center(
-        child: Column(
-         children: [
-          Text("$number",style:TextStyle(fontSize:40)),
-          const SizedBox(height:20),
-          ElevatedButton(onPressed: (){
-            setState(() {
-              number+=5;
-            });
-          }, child: const Text("Increase"),     
+class _MyAppState extends State<MyApp>{
+     bool isliked=false;
+     @override  
+     Widget build(BuildContext context){
+      return Scaffold(
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                isliked ? "❤️" : "🤍",
+                style: TextStyle(fontSize: 30),
+              ),
+             ElevatedButton(onPressed: (){
+              setState(() {
+                isliked=!isliked;
+              });
+             }, child: const Text("like / unlike")),
+
+            ],
           ),
-          SizedBox(height: 20),
-          ElevatedButton(onPressed: (){
-            setState(() {
-              number-=5;
-            });
-          }, child: const Text("Decreased")),
-         ],
         ),
-      ),
-    );
-   }
+      );
+     }
 }
