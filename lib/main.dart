@@ -1,33 +1,38 @@
 import 'package:flutter/material.dart';
 void main(){
   runApp(MaterialApp(
-    home:WelcomePage(),
+    home:CounterPage(),
   ));
 }
-class WelcomePage extends StatefulWidget{
-  const WelcomePage({super.key});
-  State<WelcomePage> createState() => _WelcomePageState();
-
+class CounterPage extends StatefulWidget{
+    const CounterPage({super.key});
+    State<CounterPage> createState()=>_CounterPageState();
 }
-class _WelcomePageState extends State<WelcomePage> {
-      Color backgroundColor= Colors.blue;
-      void changebackground(){
-        setState(() {
-          backgroundColor=Colors.green;
-        });
-      }
-      @override
-     Widget build(BuildContext context){
-        return Scaffold(
-          backgroundColor: backgroundColor,
-          appBar: AppBar(
-            title: const Text("Color Change App"),      
+class _CounterPageState extends State<CounterPage>{
+   int number=0;
+   @override  
+   Widget build(BuildContext context){
+    return Scaffold(
+      body: Center(
+        child: Column(
+         children: [
+          Text("$number",style:TextStyle(fontSize:40)),
+          const SizedBox(height:20),
+          ElevatedButton(onPressed: (){
+            setState(() {
+              number+=5;
+            });
+          }, child: const Text("Increase"),     
           ),
-          body: Center(
-            child: ElevatedButton(onPressed: 
-            changebackground, child: const Text("Color changed"),
-            ),
-          ),
-        );
-     }
-  }
+          SizedBox(height: 20),
+          ElevatedButton(onPressed: (){
+            setState(() {
+              number-=5;
+            });
+          }, child: const Text("Decreased")),
+         ],
+        ),
+      ),
+    );
+   }
+}
