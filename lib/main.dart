@@ -1,36 +1,28 @@
-import "package:flutter/material.dart";
+import 'dart:io';
+import 'package:flutter/material.dart';
 void main(){
   runApp(MaterialApp(
-    debugShowCheckedModeBanner: false,
-    home:MyApp(),
+  debugShowCheckedModeBanner: false,
+  home:WelcomePage(),
   ));
+  
 }
-class MyApp extends StatefulWidget{
-  const MyApp({super.key});
-  State<MyApp> createState()=> _MyAppState();
-}
-class _MyAppState extends State<MyApp>{
-     bool isliked=false;
-     @override  
-     Widget build(BuildContext context){
-      return Scaffold(
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                isliked ? "❤️" : "🤍",
-                style: TextStyle(fontSize: 30),
-              ),
-             ElevatedButton(onPressed: (){
-              setState(() {
-                isliked=!isliked;
-              });
-             }, child: const Text("like / unlike")),
+class WelcomePage extends StatelessWidget{
+  const WelcomePage({super.key});
+  @override  
+  Widget build(BuildContext context){
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Container"),
 
-            ],
-          ),
+      ),
+      body: Center(
+        child: Container(
+          width: 100,
+          height: 100,
+          color: Colors.black,
         ),
-      );
-     }
+      ),
+    );
+  }
 }
