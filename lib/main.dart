@@ -2,28 +2,29 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 void main(){
   runApp(MaterialApp(
-    debugShowCheckedModeBanner: false,
-  home:Circularpage(),
+   home:WelcomePage(),
   ));
 }
-class Circularpage extends StatelessWidget{
-  const Circularpage({super.key});
-  @override   
+class WelcomePage extends StatelessWidget{
+  const WelcomePage({super.key});
+  @override  
   Widget build(BuildContext context){
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Box Decoration with Border Radius"),
+        title: const Text("Row practice"),
       ),
       body: Center(
-        child: Container(
-          width: 100,
-          height: 100,
-          decoration: BoxDecoration(
-            color:Colors.yellow,
-            borderRadius: BorderRadius.circular(20),
-          ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            Icon(Icons.home, size:40),
+            Icon(Icons.search,size:40),
+            Icon(Icons.person,size: 40),
+          ],
         ),
-      ),
-    );
+          
+        ),
+      );
+    
   }
 }
