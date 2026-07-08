@@ -1,18 +1,27 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 void main(){
   runApp(MaterialApp(
-  home:Scaffold(
-    appBar: AppBar(
-      title: const Text("List View"),
+    home: Scaffold(
+      appBar: AppBar(
+        title: const Text("Example"),
+      ),
+      body:ListView(
+        children: [
+          ListTile(
+            leading: Icon(Icons.person),
+            title:Text("Shahzaib"),
+          ),
+          ListTile(
+            leading: Icon(Icons.person),
+            title: Text("Bilal"),
+          ),
+          ListTile(
+            leading: Icon(Icons.person),
+            title: Text("Ahmed"),
+          ),
+        ],
+      )
     ),
-    body: ListView(
-      children: [
-        Container(height: 100,color:Colors.red),
-        Container(height: 100,color:Colors.yellow),
-        Container(height: 100,color:Colors.pink),
-        Container(height: 100,color:Colors.green),
-      ],
-    ),
-  ),
   ));
 }
