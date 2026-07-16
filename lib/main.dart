@@ -2,43 +2,61 @@ import 'package:flutter/material.dart';
 void main(){
   runApp(MaterialApp(
   debugShowCheckedModeBanner: false,
-  home:Screen(),
+   home:MyApp(),
   ));
 }
-class Screen extends StatefulWidget{
-  const Screen({super.key});
-  State<Screen> createState()=> _ScreenState();
+class MyApp extends StatefulWidget{
+  const MyApp({super.key});
+  State<MyApp> createState()=>_MyAppState();
 }
-class _ScreenState extends State<Screen>{
-  int currentindex=0;
-  List <Widget> screens=const[
-  Center(child: Text("Home Screen",style: TextStyle(fontSize: 25))),
-  Center(child: Text("SearchScreen",style: TextStyle(fontSize: 25))),
-  Center(child: Text("Profile Scree",style: TextStyle(fontSize: 25))),
-  ];
+class _MyAppState extends State<MyApp>{
   @override   
   Widget build(BuildContext context){
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Bottom Navigation Bar"),
+        title: const Text("Basic Drawer Example"),
       ),
-      body:screens[currentindex],
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: currentindex,
-        onTap: (index){
-          setState(() {
-            currentindex=index;
-          });
-        },
-        items:const[
-          BottomNavigationBarItem(icon: Icon(Icons.home),
-            label:"Home",
-          ),
-          BottomNavigationBarItem(icon: Icon(Icons.search),
-          label:"Search",
-          ),
-          BottomNavigationBarItem(icon: Icon(Icons.person),label:"Profile"),
-        ],),
+      drawer: Drawer(
+        child: ListView(
+          children: [
+            DrawerHeader(
+              decoration:BoxDecoration(
+                color:Colors.blue,
+                
+              ),
+              child: Center(
+                child: Text(
+                  "Shahzaib Here",
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),),
+              ListTile(
+                leading: Icon(Icons.home),
+                title: Text("Home"),  
+              ),
+              ListTile(
+                leading: Icon(Icons.person),
+                title: Text("Profile"),
+              ),
+              ListTile(
+                leading: Icon(Icons.settings),
+                title:Text("Setting"),
+              ),
+              ListTile(
+                leading: Icon(Icons.logout),
+                title: Text("Logout"),
+              ),
+          ],
+        ),
+      ),
+      body:Center(
+        child: Text(
+          "Basic Drawer Example",
+        ),
+      ),
     );
   }
 }
