@@ -1,62 +1,49 @@
 import 'package:flutter/material.dart';
 void main(){
   runApp(MaterialApp(
-  debugShowCheckedModeBanner: false,
-   home:MyApp(),
+ debugShowCheckedModeBanner: false,
+ home:HomeScreen(),
   ));
 }
-class MyApp extends StatefulWidget{
-  const MyApp({super.key});
-  State<MyApp> createState()=>_MyAppState();
-}
-class _MyAppState extends State<MyApp>{
+class HomeScreen extends StatelessWidget{
+  const HomeScreen({super.key});
   @override   
   Widget build(BuildContext context){
-    return Scaffold(
+    return DefaultTabController(length: 3, child: Scaffold(
       appBar: AppBar(
-        title: const Text("Basic Drawer Example"),
+        title: const Text("Tab Bar Basic Example makes my concept clear and concise"),
+        bottom: const TabBar(tabs: [
+          Tab(icon: Icon(Icons.home),text: "Home"),
+          Tab(icon: Icon(Icons.favorite),text: "Likes"),
+          Tab(icon: Icon(Icons.person),text: "Profile"),
+        ],),
       ),
-      drawer: Drawer(
-        child: ListView(
-          children: [
-            DrawerHeader(
-              decoration:BoxDecoration(
-                color:Colors.blue,
-                
-              ),
-              child: Center(
-                child: Text(
-                  "Shahzaib Here",
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),),
-              ListTile(
-                leading: Icon(Icons.home),
-                title: Text("Home"),  
-              ),
-              ListTile(
-                leading: Icon(Icons.person),
-                title: Text("Profile"),
-              ),
-              ListTile(
-                leading: Icon(Icons.settings),
-                title:Text("Setting"),
-              ),
-              ListTile(
-                leading: Icon(Icons.logout),
-                title: Text("Logout"),
-              ),
-          ],
+      body:TabBarView(children: [
+        Center(
+          child: Text(
+            "Home Screen",
+            style: TextStyle(
+              fontSize: 24,
+            ),
+          ),
         ),
-      ),
-      body:Center(
-        child: Text(
-          "Basic Drawer Example",
+        Center(
+          child: Text(
+            "Like-Screen",
+            style:TextStyle(
+              fontSize: 24,
+            ),
+          ),
         ),
-      ),
-    );
+        Center(
+          child: Text(
+            "Profile-Screen",
+            style: TextStyle(
+              fontSize:24,
+            ),
+          ),
+        ),
+      ],),
+    ),);
   }
 }
