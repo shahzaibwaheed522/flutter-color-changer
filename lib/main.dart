@@ -1,49 +1,36 @@
 import 'package:flutter/material.dart';
 void main(){
   runApp(MaterialApp(
- debugShowCheckedModeBanner: false,
- home:HomeScreen(),
+  debugShowCheckedModeBanner: false,
+  home:Screen(),
   ));
 }
-class HomeScreen extends StatelessWidget{
-  const HomeScreen({super.key});
-  @override   
+class Screen extends StatelessWidget{
+  const Screen({super.key});
+  @override  
   Widget build(BuildContext context){
-    return DefaultTabController(length: 3, child: Scaffold(
+    return Scaffold(
       appBar: AppBar(
-        title: const Text("Tab Bar Basic Example makes my concept clear and concise"),
-        bottom: const TabBar(tabs: [
-          Tab(icon: Icon(Icons.home),text: "Home"),
-          Tab(icon: Icon(Icons.favorite),text: "Likes"),
-          Tab(icon: Icon(Icons.person),text: "Profile"),
-        ],),
+        title: const Text("Dialog Box"),
       ),
-      body:TabBarView(children: [
-        Center(
-          child: Text(
-            "Home Screen",
-            style: TextStyle(
-              fontSize: 24,
-            ),
-          ),
-        ),
-        Center(
-          child: Text(
-            "Like-Screen",
-            style:TextStyle(
-              fontSize: 24,
-            ),
-          ),
-        ),
-        Center(
-          child: Text(
-            "Profile-Screen",
-            style: TextStyle(
-              fontSize:24,
-            ),
-          ),
-        ),
-      ],),
-    ),);
+      body: Center(
+        child: ElevatedButton(onPressed: (){
+          showDialog(context: context, builder: (context){
+            return AlertDialog(
+              title: const Text("Delete"),
+              content:const Text("Are your sure"),
+              actions: [
+                TextButton(onPressed: (){
+                  Navigator.pop(context);
+                }, child: const Text("No"),),
+                TextButton(onPressed: (){
+                  Navigator.pop(context);
+                }, child: const Text("Yes"),),
+              ],
+            );
+          },);
+        }, child: const Text("Show Dialog Box"),),
+      ),
+    );
   }
 }
