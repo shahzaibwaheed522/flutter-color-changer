@@ -1,35 +1,77 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 void main(){
   runApp(MaterialApp(
-  debugShowCheckedModeBanner: false,
-  home:Screen(),
+   debugShowCheckedModeBanner: false,
+   home:HomeScreen(),
   ));
 }
-class Screen extends StatelessWidget{
-  const Screen({super.key});
-  @override  
+class HomeScreen extends StatefulWidget{
+  const HomeScreen({super.key});
+  State<HomeScreen> createState()=> HomeScreenState();
+}
+class HomeScreenState extends State<HomeScreen>{
+  TextEditingController namecontroller=TextEditingController();
+  String username="";
+  Future<void> savedate() async{
+    SharedPreferences prefs= await SharedPreferences.getInstance();
+    prefs.setString("Username", namecontroller.text);
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text("Username Saved"),),
+    );
+  }
+  Future<void>readdate() async{
+    SharedPreferences prefs= await SharedPreferences.getInstance();
+    setState(() {
+    username=prefs.getString("username")?? "No Data";
+       });
+  }
+  @override   
+  void initState(){
+    super.initState();
+    readdate();
+  }
   Widget build(BuildContext context){
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Dialog Box"),
+        title: const Text("Shared Preference"),
+        centerTitle: true,
+        backgroundColor: Colors.red,
       ),
-      body: Center(
-        child: ElevatedButton(onPressed: (){
-          showDialog(context: context, builder: (context){
-            return AlertDialog(
-              title: const Text("Delete"),
-              content:const Text("Are your sure"),
-              actions: [
-                TextButton(onPressed: (){
-                  Navigator.pop(context);
-                }, child: const Text("No"),),
-                TextButton(onPressed: (){
-                  Navigator.pop(context);
-                }, child: const Text("Yes"),),
-              ],
-            );
-          },);
-        }, child: const Text("Show Dialog Box"),),
+      body:Padding(padding: EdgeInsets.all(20),
+      child: Column(
+        children: [
+          TextField(
+            controller: namecontroller,
+            decoration: InputDecoration(
+              labelText: "Enter the username",
+              border:OutlineInputBorder(),
+            ),
+          ),
+          SizedBox(height: 20),
+          ElevatedButton(onPressed: ()async
+          {
+             await savedate();
+             readdate();
+
+          }, child: Text("Saved"),),
+
+          SizedBox(height: 20),
+          Text("Username",
+          style: TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+          ),
+          ),
+          SizedBox(height:20),
+          Text(
+            username,
+            style: TextStyle(
+              color:Colors.blue,
+            ),
+          ),
+        ],
+      ),
       ),
     );
   }
