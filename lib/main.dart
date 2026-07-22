@@ -1,69 +1,70 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-void main(){
-  runApp(MaterialApp(
-  debugShowCheckedModeBanner: false,
-  home:HighScoreScreen(),
-  ));
+import 'package:hive_flutter/hive_flutter.dart';
+void main()async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await Hive.initFlutter();
+  await Hive.openBox("mybox");
+  runApp(
+    MaterialApp(
+    debugShowCheckedModeBanner: false,
+    home:HomeScreen(),
+    ));
 }
-class HighScoreScreen extends StatefulWidget{
-  const HighScoreScreen({super.key});
-  State<HighScoreScreen> createState()=> _HighScoreScreenState();
+class HomeScreen extends StatefulWidget{
+  const HomeScreen({super.key});
+  State<HomeScreen> createState()=> _HomeScreenState();
 }
-class _HighScoreScreenState extends State<HighScoreScreen>{
-  TextEditingController scorecontroller=TextEditingController();
-  int highscore=0;
-void initState(){
-  super.initState();
-  loadHighScore();
-}
-Future<void> loadHighScore() async{
-  SharedPreferences pref= await SharedPreferences.getInstance();
-  setState(() {
-    highscore=pref.getInt("highScore")?? 0;
-  });
-}
-Future<void> saveScore() async{
-  SharedPreferences pref= await SharedPreferences.getInstance();
-  int score= int.tryParse(scorecontroller.text)??0;
-  if(score>highscore){
-    await pref.setInt("highScore", score);
-    setState(() {
-      highscore=score;
-    });
+class _HomeScreenState extends State<HomeScreen>{
+  TextEditingController namecontroller=TextEditingController();
+  var box=Hive.box("mybox");
+  String username="";
+  @override 
+  Widget build(BuildContext context){
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Hive Example"),
+        centerTitle: true,
+      ),
+      body:Padding(     
+        padding: EdgeInsets.all(20),
+        child: Column(
+          children: [
+            TextField(
+              controller: namecontroller,
+              decoration: InputDecoration(
+                hintText: "Enter Username",
+                border: OutlineInputBorder(),
+              ),
+            ),
+            const SizedBox(height:20),
+            ElevatedButton(onPressed: (){
+              box.put("username", namecontroller.text);
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text("Saved Successfully"),),
+              );
+            }, child: const Text("saved"),),
+            const SizedBox(height:20),
+            ElevatedButton(onPressed: (){
+              setState(() {
+                username=box.get("Username")?? "No data";
+              });
+            }, child: const Text("Read"),),
+            const SizedBox(height:20),
+            ElevatedButton(onPressed: (){
+              box.delete("Username");
+              setState(() {
+                username="Deleted";
+              });
+            }, child: const Text("delete"),),
+            const SizedBox(height:20),
+            Text(username,
+            style: TextStyle(
+              fontSize: 22,
+              fontWeight:FontWeight.bold,
+            ),),
+          ],
+        ),
+      ),
+    );
   }
-  scorecontroller.clear();
-}
-@override   
-Widget build(BuildContext context){
-  return Scaffold(
-    appBar: AppBar(
-      title: const Text("High-Score"),
-    ),
-    body: Padding(padding: EdgeInsets.all(20),
-    child: Column(
-      children: [
-        TextField(
-          controller:scorecontroller,
-          keyboardType: TextInputType.number,
-          decoration: InputDecoration(
-            labelText:"Enter High Score",
-            border: OutlineInputBorder(),
-          ),
-        ),
-        const SizedBox(height:20),
-        ElevatedButton(onPressed: saveScore, child: const Text("Save-Score"),),
-        const SizedBox(height: 20),
-       Text(   
-        "HighScore-$highscore",
-        style: TextStyle(
-          fontSize:20,
-          fontWeight:FontWeight.bold,
-        ),
-       ),
-      ],
-    ),
-    ),
-  );
-}
 }
