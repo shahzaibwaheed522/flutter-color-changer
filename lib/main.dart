@@ -3,87 +3,44 @@ import 'package:shared_preferences/shared_preferences.dart';
 void main(){
   runApp(MaterialApp(
   debugShowCheckedModeBanner: false,
-   home:ScoreScreen(),
+  home:SettingScreen(),
   ));
 }
-class ScoreScreen extends StatefulWidget{
-  const ScoreScreen({super.key});
-  State<ScoreScreen> createState()=> _ScoreScreenState();
+class SettingScreen extends StatefulWidget{
+  const SettingScreen({super.key});
+  State<SettingScreen> createState()=> SettingScreenState();
 }
-class _ScoreScreenState extends State<ScoreScreen>{
-  TextEditingController scorecontroller=TextEditingController();
-  int highscore=0;
-  Future<void> saveScore() async{
-    SharedPreferences prefs=await SharedPreferences.getInstance();
-    await prefs.setInt("Highscore", int.parse(scorecontroller.text),);
-
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text("Score-Saved"),),
-    );
-     print(prefs.getInt("highScore"));
-  }
-  Future<void> readScore() async{
-    SharedPreferences prefs= await SharedPreferences.getInstance();
-    print("Read: ${prefs.getInt("highScore")}");
-    setState(() {
-      highscore=prefs.getInt("highscore")??0;
-    });
-  }
+class SettingScreenState extends State<SettingScreen>{
+  bool isdarkmode=false;
   @override   
   void initState(){
     super.initState();
-    readScore();
+    loadSetting();
   }
-  @override  
+  Future<void> loadSetting() async{
+    SharedPreferences pref=await SharedPreferences.getInstance();
+    setState(() {
+      isdarkmode=pref.getBool("darkmode")??false;
+    });
+  }
+  Future<void> saveSetting(bool value) async{
+    SharedPreferences pref= await SharedPreferences.getInstance();
+    pref.setBool("darkmode", value);
+    setState(() {
+      isdarkmode=value;
+    });
+  }
+  @override   
   Widget build(BuildContext context){
     return Scaffold(
       appBar: AppBar(
-        title: const Text("High-Score"),
-        centerTitle: true,
-        backgroundColor: Colors.cyanAccent,
+        title: const Text("Settings"),
       ),
-      body:Padding(
-        padding: EdgeInsets.all(20),
-        child: Column(
-          children: [
-            TextField(
-              controller:scorecontroller,
-              keyboardType: TextInputType.number,
-              decoration: InputDecoration(
-                labelText:"Enter Score",
-                border:OutlineInputBorder(),
-              ),
-            ),
-            const SizedBox(height:20),
-            ElevatedButton(onPressed: ()async{
-              await saveScore();
-            },
-             child: Text("Save Score"),
-             ),
-             SizedBox(height: 20),
-             ElevatedButton(onPressed: ()async{
-              await readScore();
-             }, child: Text("Read Score"),
-             ),
-             SizedBox(height:20),
-             Text(
-              "High Score",
-              style: TextStyle(
-                fontSize:22,
-                fontWeight: FontWeight.bold,
-              ),
-             ),
-             SizedBox(height:20),
-             Text(
-              "$highscore",
-              style: TextStyle(
-                fontSize: 30,
-                color:Colors.blue,
-              ),
-             ),
-          ],
-        ),
-      ),
+      body: SwitchListTile(
+        title: const Text("DarkMode"),
+        value: isdarkmode, onChanged: (value){
+          saveSetting(value);
+        },),
     );
   }
 }
